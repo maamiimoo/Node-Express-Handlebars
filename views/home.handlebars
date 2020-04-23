@@ -1,0 +1,50 @@
+<div class="container">
+    <div class="img container">
+        <img src="https://publicdomainq.net/images/201806/14s/publicdomainq-0023131edu.jpg" alt="cute burger image">
+    </div>
+    <h1>eat me!</h1>
+    <div class="lists-container">
+       {{!-- this is not devoured --}}
+       <h3>Not Devoured</h3>
+        <ul>
+            {{#each burgers}}
+                {{#with dataValues}}
+                {{#unless dataValues.isDevoured}}
+                <li>
+                    Name: {{ dataValues.name}} <button class="devour" data-id= "{{ dataValues.id}}" >Devour</button>
+                </li>
+                {{/unless}}
+                {{/with}}
+            {{/each}}
+
+        </ul>
+        {{!-- this is devoured --}}
+        <h3>Devoured</h3>
+        <ul>
+            {{#each burgers}}
+                {{#if dataValues.isDevoured }}
+                <li>
+                    Name: {{ dataValues.name}}
+                </li>
+                {{/if}}
+            {{/each}}
+
+
+        </ul>
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+<script>
+    $(".devour").click(async (e) => {
+        const $currentTarget = $(e.currentTarget);
+
+        const id = $currentTarget.data("id");
+
+        await $.ajax({
+            method: 'PUT',
+            url: `/api/burger/${id}/devour`
+        });
+
+    });
+</script>
